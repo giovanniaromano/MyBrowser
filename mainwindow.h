@@ -23,8 +23,6 @@ private slots:
 
     void on_urlEdit0_returnPressed();
 
-    void on_urlEdit_returnPressed();
-
     void on_webEngineView0_loadStarted();
 
     void on_webEngineView0_loadFinished(bool arg1);

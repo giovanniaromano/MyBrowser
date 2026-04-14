@@ -6,6 +6,7 @@
 #include <QWebEngineCookieStore>
 #include <QWebEngineProfile>
 #include <qcustomtabwidget.h>
+#include <QShortcut>
 
 
 using namespace std;
@@ -68,10 +69,7 @@ void MainWindow::on_urlEdit0_returnPressed()
 }
 
 
-void MainWindow::on_urlEdit_returnPressed()
-{
-     on_goButton_clicked();
-}
+
 
 void MainWindow::on_webEngineView0_loadStarted()
 {
@@ -162,7 +160,7 @@ void MainWindow::on_newTabButton_clicked()
         goButton->setText("GO");
         goButton->setObjectName("goButton"+std::to_string(newIndex));
         gridLayout->addWidget(goButton, 0, 4, 1, 1);
-        QMetaObject::Connection result = QObject::connect(goButton, &QCustomPushButton::clicked,
+        QMetaObject::Connection result1 = QObject::connect(goButton, &QCustomPushButton::clicked,
                                                           tabWidgetPage, &QCustomTabWidget::onButtonClicked);
 
         QWebEngineView* webEngineView = new QWebEngineView(tabWidgetPage);
@@ -175,6 +173,14 @@ void MainWindow::on_newTabButton_clicked()
         webEngineView->setLayoutDirection(Qt::LeftToRight);
         webEngineView->setAutoFillBackground(false);
         webEngineView->setUrl(QUrl(QString::fromUtf8("about:blank")));
+
+
+        QMetaObject::Connection result2 = QObject::connect(forwardButton, &QCustomPushButton::clicked,
+                                                          webEngineView, &QWebEngineView::back);
+        QMetaObject::Connection result3 = QObject::connect(backButton, &QCustomPushButton::clicked,
+                                                           webEngineView, &QWebEngineView::forward);
+
+
 
         gridLayout->addWidget(webEngineView, 1, 0, 1, 5);
 
@@ -189,9 +195,10 @@ void MainWindow::on_newTabButton_clicked()
         QWidget::setTabOrder(forwardButton, goButton);
         QWidget::setTabOrder(goButton, urlEdit);
 
-        QMetaObject::Connection result1 = QObject::connect(webEngineView, &QWebEngineView::loadFinished,
+        QMetaObject::Connection result4 = QObject::connect(webEngineView, &QWebEngineView::loadFinished,
                                                            this, &MainWindow::on_webEngineView_loadFinished);
-
+        QShortcut *returnShortcut = new QShortcut(QKeySequence("Return"), tabWidgetPage);
+        QObject::connect(returnShortcut, SIGNAL(activated()), goButton, SLOT(click()));
 
     } // setupUi
 

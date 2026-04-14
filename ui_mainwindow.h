@@ -45,10 +45,10 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->resize(800, 580);
-        MainWindow->setMaximumSize(QSize(16777215, 777215));
+        //MainWindow->setMaximumSize(QSize(16777215, 777215));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName("centralWidget");
-        centralWidget->setMaximumSize(QSize(16777215, 16777215));
+        //centralWidget->setMaximumSize(QSize(16777215, 16777215));
         gridLayout = new QGridLayout(centralWidget);
         gridLayout->setObjectName("gridLayout");
         tabWidget = new QTabWidget(centralWidget);
@@ -58,7 +58,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
         tabWidget->setSizePolicy(sizePolicy);
-        tabWidget->setMaximumSize(QSize(16777215, 16777215));
+        //tabWidget->setMaximumSize(QSize(16777215, 16777215));
         tabWidget->setTabsClosable(true);
         tabWidget->setMovable(true);
         tabWidgetPage = new QWidget();

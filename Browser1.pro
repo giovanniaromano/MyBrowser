@@ -32,7 +32,8 @@ HEADERS += \
 
 TRANSLATIONS += \
     Browser1_en_US.ts
-CONFIG += lrelease
+#CONFIG += lrelease
+CONFIG += static release
 CONFIG += embed_translations
 
 # Default rules for deployment.
