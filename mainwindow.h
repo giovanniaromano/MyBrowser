@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -18,15 +19,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_goButton0_clicked();
+
       void on_goButton_clicked();
 
-    void on_urlEdit0_returnPressed();
-
-    void on_webEngineView0_loadStarted();
-
-    void on_webEngineView0_loadFinished(bool arg1);
      void on_webEngineView_loadFinished(bool arg1);
+      void  webEngineView_setIcon(QIcon arg1);
+      void  webEngineView_setTitle(const QString &title);
 
     void on_newTabButton_clicked();
 

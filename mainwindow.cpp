@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->on_newTabButton_clicked();
     QPushButton* moreTabsButton = new QPushButton( ui->tabWidget);
     moreTabsButton->setObjectName("moreTabsButton");
     moreTabsButton->setText("+");
@@ -29,23 +30,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_goButton0_clicked()
-{
-
-
-    //Se manca il protocollo, si inserisce per default "https"
-    QString url = ui->urlEdit0->text();
-
-    if(!url.contains("http") && !url.contains("ftp")){
-        url = "https://" +url;
-    }
-
-    ui->webEngineView0->load(url);
-}
-
 void MainWindow::on_goButton_clicked()
 {
-
 
     int currentIndex = ui->tabWidget->currentIndex();
     //Nel  tab corrente, si devono prendere il campo url e l'oggetto web engine
@@ -63,39 +49,6 @@ void MainWindow::on_goButton_clicked()
 }
 
 
-void MainWindow::on_urlEdit0_returnPressed()
-{
-    on_goButton0_clicked();
-}
-
-
-
-
-void MainWindow::on_webEngineView0_loadStarted()
-{
-    ui->statusbar->showMessage("Loading URL...");
-}
-
-
-void MainWindow::on_webEngineView0_loadFinished(bool arg1)
-{
-    if(arg1){
-        ui->statusbar->showMessage("Load successful.");
-
-        ui->urlEdit0->setText(ui->webEngineView0->url().toString());
-        int currentIndex = ui->tabWidget->currentIndex();
-
-        QString tabTitle =ui->webEngineView0->title();
-        if(tabTitle.length() > 20){
-            tabTitle.truncate(20);
-        }
-         ui->tabWidget->setTabText(currentIndex, tabTitle);
-         ui->tabWidget->setTabIcon(currentIndex, ui->webEngineView0->icon());
-
-    }else{
-         ui->statusbar->showMessage("Load unsuccessful.");
-    }
-}
 
 void MainWindow::on_webEngineView_loadFinished(bool arg1)
 {
@@ -113,6 +66,7 @@ void MainWindow::on_webEngineView_loadFinished(bool arg1)
                 tabTitle.truncate(20);
             }
             ui->tabWidget->setTabText(currentIndex, tabTitle);
+            QIcon icon = webEngine->icon();
             ui->tabWidget->setTabIcon(currentIndex, webEngine->icon());
 
         }
@@ -122,17 +76,27 @@ void MainWindow::on_webEngineView_loadFinished(bool arg1)
     }
 }
 
+void MainWindow::webEngineView_setIcon(QIcon icon)
+{
+   int index = ui->tabWidget->currentIndex();
+     ui->tabWidget->setTabIcon(index, icon);
+}
 
 
+    void MainWindow::webEngineView_setTitle(const QString &title)
+{
+    int index = ui->tabWidget->currentIndex();
+    ui->tabWidget->setTabText(index, title);
+}
 
 void MainWindow::on_newTabButton_clicked()
 {
         QCustomTabWidget* tabWidgetPage = new QCustomTabWidget();
 
-
         //Si setta ll'indice
         int newIndex = ui->tabWidget->currentIndex()+1;
         tabWidgetPage->setCurrentIndex(newIndex);
+        tabWidgetPage->setIndex(newIndex);
         tabWidgetPage->setObjectName("tab"+std::to_string(newIndex));
 
         QGridLayout* gridLayout = new QGridLayout(tabWidgetPage);
@@ -160,7 +124,7 @@ void MainWindow::on_newTabButton_clicked()
         goButton->setText("GO");
         goButton->setObjectName("goButton"+std::to_string(newIndex));
         gridLayout->addWidget(goButton, 0, 4, 1, 1);
-        QMetaObject::Connection result1 = QObject::connect(goButton, &QCustomPushButton::clicked,
+        QMetaObject::Connection result = QObject::connect(goButton, &QCustomPushButton::clicked,
                                                           tabWidgetPage, &QCustomTabWidget::onButtonClicked);
 
         QWebEngineView* webEngineView = new QWebEngineView(tabWidgetPage);
@@ -175,12 +139,17 @@ void MainWindow::on_newTabButton_clicked()
         webEngineView->setUrl(QUrl(QString::fromUtf8("about:blank")));
 
 
-        QMetaObject::Connection result2 = QObject::connect(forwardButton, &QCustomPushButton::clicked,
-                                                          webEngineView, &QWebEngineView::back);
-        QMetaObject::Connection result3 = QObject::connect(backButton, &QCustomPushButton::clicked,
-                                                           webEngineView, &QWebEngineView::forward);
+        result = QObject::connect(forwardButton, &QCustomPushButton::clicked,
+                                                          webEngineView, &QWebEngineView::forward);
+        result = QObject::connect(backButton, &QCustomPushButton::clicked,
+                                                           webEngineView, &QWebEngineView::back);
 
-
+        //Per settare titolo e icona
+        QIcon icon;
+        result = QObject::connect(webEngineView, &QWebEngineView::iconChanged,
+                                  tabWidgetPage,&QCustomTabWidget::on_webEngineView_changeIcon);
+        result = QObject::connect(webEngineView, &QWebEngineView::titleChanged,
+                                    tabWidgetPage,&QCustomTabWidget::on_webEngineView_changeTitle);
 
         gridLayout->addWidget(webEngineView, 1, 0, 1, 5);
 
@@ -195,12 +164,11 @@ void MainWindow::on_newTabButton_clicked()
         QWidget::setTabOrder(forwardButton, goButton);
         QWidget::setTabOrder(goButton, urlEdit);
 
-        QMetaObject::Connection result4 = QObject::connect(webEngineView, &QWebEngineView::loadFinished,
-                                                           this, &MainWindow::on_webEngineView_loadFinished);
+
         QShortcut *returnShortcut = new QShortcut(QKeySequence("Return"), tabWidgetPage);
         QObject::connect(returnShortcut, SIGNAL(activated()), goButton, SLOT(click()));
 
-    } // setupUi
+    }
 
 
 

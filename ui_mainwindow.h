@@ -61,50 +61,6 @@ public:
         //tabWidget->setMaximumSize(QSize(16777215, 16777215));
         tabWidget->setTabsClosable(true);
         tabWidget->setMovable(true);
-        tabWidgetPage = new QWidget();
-        tabWidgetPage->setObjectName("tabWidgetPage");
-        gridLayout_2 = new QGridLayout(tabWidgetPage);
-        gridLayout_2->setObjectName("gridLayout_2");
-        backButton0 = new QPushButton(tabWidgetPage);
-        backButton0->setObjectName("backButton0");
-
-        gridLayout_2->addWidget(backButton0, 0, 0, 1, 1);
-
-        refreshButton0 = new QPushButton(tabWidgetPage);
-        refreshButton0->setObjectName("refreshButton0");
-
-        gridLayout_2->addWidget(refreshButton0, 0, 1, 1, 1);
-
-        forwardButton0 = new QPushButton(tabWidgetPage);
-        forwardButton0->setObjectName("forwardButton0");
-
-        gridLayout_2->addWidget(forwardButton0, 0, 2, 1, 1);
-
-        urlEdit0 = new QLineEdit(tabWidgetPage);
-        urlEdit0->setObjectName("urlEdit0");
-
-        gridLayout_2->addWidget(urlEdit0, 0, 3, 1, 1);
-
-        goButton0 = new QPushButton(tabWidgetPage);
-        goButton0->setObjectName("goButton0");
-
-        gridLayout_2->addWidget(goButton0, 0, 4, 1, 1);
-
-        webEngineView0 = new QWebEngineView(tabWidgetPage);
-        webEngineView0->setObjectName("webEngineView0");
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Ignored);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(webEngineView0->sizePolicy().hasHeightForWidth());
-        webEngineView0->setSizePolicy(sizePolicy1);
-        webEngineView0->setLayoutDirection(Qt::LeftToRight);
-        webEngineView0->setAutoFillBackground(false);
-        webEngineView0->setUrl(QUrl(QString::fromUtf8("about:blank")));
-
-        gridLayout_2->addWidget(webEngineView0, 1, 0, 1, 5);
-
-        tabWidget->addTab(tabWidgetPage, QString());
-
         gridLayout->addWidget(tabWidget, 1, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
@@ -115,29 +71,11 @@ public:
         menuBar->setObjectName("menuBar");
         menuBar->setGeometry(QRect(0, 0, 800, 23));
         MainWindow->setMenuBar(menuBar);
-        QWidget::setTabOrder(backButton0, refreshButton0);
-        QWidget::setTabOrder(refreshButton0, forwardButton0);
-        QWidget::setTabOrder(forwardButton0, goButton0);
-        QWidget::setTabOrder(goButton0, urlEdit0);
-
-        retranslateUi(MainWindow);
-        QObject::connect(backButton0, &QPushButton::clicked, backButton0, qOverload<>(&QPushButton::click));
-        QObject::connect(refreshButton0, &QPushButton::clicked, webEngineView0, qOverload<>(&QWebEngineView::reload));
-        QObject::connect(forwardButton0, &QPushButton::clicked, webEngineView0, qOverload<>(&QWebEngineView::forward));
-        QObject::connect(backButton0, &QPushButton::clicked, webEngineView0, qOverload<>(&QWebEngineView::back));
-
+        MainWindow->setWindowTitle(QCoreApplication::translate("MyBrowser", "MyBrowser", nullptr));
         QMetaObject::connectSlotsByName(MainWindow);
+
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
-    {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        backButton0->setText(QCoreApplication::translate("MainWindow", "<", nullptr));
-        refreshButton0->setText(QCoreApplication::translate("MainWindow", "Refresh", nullptr));
-        forwardButton0->setText(QCoreApplication::translate("MainWindow", ">", nullptr));
-        goButton0->setText(QCoreApplication::translate("MainWindow", "GO", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tabWidgetPage), QString());
-    } // retranslateUi
 
 };
 
