@@ -16,15 +16,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    FixedWidthString.cpp \
     main.cpp \
     mainwindow.cpp \
     qcustompushbutton.cpp \
-    qcustomtabwidget.cpp
+    qcustomtab.cpp
 
 HEADERS += \
     mainwindow.h \
     qcustompushbutton.h \
-    qcustomtabwidget.h \
+    qcustomtab.h \
     ui_mainwindow.h
 
 #FORMS += \
@@ -32,8 +33,9 @@ HEADERS += \
 
 TRANSLATIONS += \
     Browser1_en_US.ts
-#CONFIG += lrelease
-CONFIG += static release
+
+CONFIG += lrelease
+#CONFIG += static release
 CONFIG += embed_translations
 
 # Default rules for deployment.

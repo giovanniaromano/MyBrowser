@@ -45,6 +45,8 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->resize(800, 580);
+
+        //MainWindow->setWindowFlags(Qt::FramelessWindowHint);
         //MainWindow->setMaximumSize(QSize(16777215, 777215));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName("centralWidget");
